@@ -1,0 +1,362 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Nov 2 10:24:42 2023
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+Use "connect username/password@XE" to connect to the database.
+SQL> connect
+Enter user-name: system as sysadb
+SP2-0306: Invalid option.
+Usage: CONN[ECT] [{logon|/|proxy} [AS {SYSDBA|SYSOPER|SYSASM}] [edition=value]]
+where <logon> ::= <username>[/<password>][@<connect_identifier>]
+      <proxy> ::= <proxyuser>[<username>][/<password>][@<connect_identifier>]
+SQL> sys as sysdba
+SP2-0734: unknown command beginning "sys as sys..." - rest of line ignored.
+SQL> connect 
+Enter user-name: sys as sysdba
+Enter password: 
+Connected to an idle instance.
+SQL> start
+SP2-1506: START, @ or @@ command has no arguments
+SQL> startup
+
+ORACLE instance started.
+
+Total System Global Area 1068937216 bytes
+Fixed Size		    2233344 bytes
+Variable Size		  616565760 bytes
+Database Buffers	  444596224 bytes
+Redo Buffers		    5541888 bytes
+    
+
+Database mounted.
+Database opened.
+SQL> SQL> SQL> SQL> CREATE TABLE EMPLOYEE(
+  2  EmpCode Number;
+EmpCode Number
+             *
+ERROR at line 2:
+ORA-00907: missing right parenthesis
+
+
+SQL> CREATE TABLE EMPLOYEE(
+  2  EmpCode NUMBER,
+  3  EmpName VARCHAR(10),
+  4  EmpCity VARCHAR(10),
+  5  DOB DATE,
+  6  DOJ DATE,
+  7  Salary NUMBER);    
+
+Table created.
+
+SQL> desc EMPLOYEE;
+ Name					   Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPCODE					    NUMBER
+ EMPNAME					    VARCHAR2(10)
+ EMPCITY					    VARCHAR2(10)
+ DOB						    DATE
+ DOJ						    DATE
+ SALARY 					    NUMBER
+
+SQL> INSERT INTO EMPLOYEE VALUES(1,'Yogesh','Delhi',1/11/75,1/1/05,12000);
+INSERT INTO EMPLOYEE VALUES(1,'Yogesh','Delhi',1/11/75,1/1/05,12000)
+                                                   *
+ERROR at line 1:
+ORA-00932: inconsistent datatypes: expected DATE got NUMBER
+
+
+SQL> INSERT INTO EMPLOYEE VALUES(1,'Yogesh','Delhi','1/11/75','1/1/05',12000);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(1,'Yogesh','Delhi','1/11/75','1/1/05',12000);^[INSERT INTO EMPLOYEE VALUES(1,'Yogesh','Delhi','1/11/75','1/1/05',12000);
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> INSERT INTO EMPLOYEE VALUES(2,'Dinesh','Delhi','22/5/78','',6000);       
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(3,'Sheena','Mumbai','16/6/89','1/6/99',50000);
+
+1 row created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(5,'Sundar','Delhi','17/8/82','',4400);       
+
+1 row created.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+   EMPCODE EMPNAME    EMPCITY	 DOB	  DOJ	       SALARY
+---------- ---------- ---------- -------- -------- ----------
+	 1 Yogesh     Delhi	 01-11-75 01-01-05	12000
+	 2 Dinesh     Delhi	 22-05-78		 6000
+	 3 Sheena     Mumbai	 16-06-89 01-06-99	50000
+	 5 Sundar     Delhi	 17-08-82		 4400
+
+SQL> SELECT EMPNAME,DOB FROM EMPOLYEE;
+SELECT EMPNAME,DOB FROM EMPOLYEE
+                        *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL>  SELECT EMPNAME,DOB FROM EMPLOYEE;
+
+EMPNAME    DOB
+---------- --------
+Yogesh	   01-11-75
+Dinesh	   22-05-78
+Sheena	   16-06-89
+Sundar	   17-08-82
+
+SQL>  SELECT EMPNAME,DOB,SYSDATE FROM EMPLOYEE;
+
+EMPNAME    DOB	    SYSDATE
+---------- -------- --------
+Yogesh	   01-11-75 02-11-23
+Dinesh	   22-05-78 02-11-23
+Sheena	   16-06-89 02-11-23
+Sundar	   17-08-82 02-11-23
+
+SQL>  SELECT EMPNAME,DOB,DOB=DOB+15 FROM EMPLOYEE;   
+ SELECT EMPNAME,DOB,DOB=DOB+15 FROM EMPLOYEE
+                       *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL>  SELECT EMPNAME,DOB,DOB+15 FROM EMPLOYEE;
+
+EMPNAME    DOB	    DOB+15
+---------- -------- --------
+Yogesh	   01-11-75 16-11-75
+Dinesh	   22-05-78 06-06-78
+Sheena	   16-06-89 01-07-89
+Sundar	   17-08-82 01-09-82
+
+SQL>  SELECT EMPNAME,DOB,DOB-3 FROM EMPLOYEE;
+
+EMPNAME    DOB	    DOB-3
+---------- -------- --------
+Yogesh	   01-11-75 29-10-75
+Dinesh	   22-05-78 19-05-78
+Sheena	   16-06-89 13-06-89
+Sundar	   17-08-82 14-08-82
+
+SQL>  SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  2  
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  2  ;
+
+EMPNAME    DOB	    TO_CHAR(DO
+---------- -------- ----------
+Yogesh	   01-11-75 01 11 1975
+Dinesh	   22-05-78 22 05 1978
+Sheena	   16-06-89 16 06 1989
+Sundar	   17-08-82 17 08 1982
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'Day MONTH Year') FROM EMPLOYEE;
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DAYMONTHYEAR')
+--------------------------------------------------------------------------------
+Yogesh	   01-11-75
+Saturday  NOVEMBER  Nineteen Seventy-Five
+
+Dinesh	   22-05-78
+Monday	  MAY	    Nineteen Seventy-Eight
+
+Sheena	   16-06-89
+Friday	  JUNE	    Nineteen Eighty-Nine
+
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DAYMONTHYEAR')
+--------------------------------------------------------------------------------
+Sundar	   17-08-82
+Tuesday   AUGUST    Nineteen Eighty-Two
+
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  2  SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  3  SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  4  SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY') FROM EMPLOYEE
+  5  
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'Day MON Year DD MM YY') FROM EMPLOYEE;
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DAYMONYEARDDMMYY')
+--------------------------------------------------------------------------------
+Yogesh	   01-11-75
+Saturday  NOV Nineteen Seventy-Five 01 11 75
+
+Dinesh	   22-05-78
+Monday	  MAY Nineteen Seventy-Eight 22 05 78
+
+Sheena	   16-06-89
+Friday	  JUN Nineteen Eighty-Nine 16 06 89
+
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DAYMONYEARDDMMYY')
+--------------------------------------------------------------------------------
+Sundar	   17-08-82
+Tuesday   AUG Nineteen Eighty-Two 17 08 82
+
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DD DD MM MM YY YYYY YYYY') FROM EMPLOYEE;
+
+EMPNAME    DOB	    TO_CHAR(DOB,'DDDDMMMMYYY
+---------- -------- ------------------------
+Yogesh	   01-11-75 01 01 11 11 75 1975 1975
+Dinesh	   22-05-78 22 22 05 05 78 1978 1978
+Sheena	   16-06-89 16 16 06 06 89 1989 1989
+Sundar	   17-08-82 17 17 08 08 82 1982 1982
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DDsp MMsp YYYYsp') FROM EMPLOYEE;
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DDSPMMSPYYYYSP')
+--------------------------------------------------------------
+Yogesh	   01-11-75
+ONE ELEVEN ONE THOUSAND NINE HUNDRED SEVENTY-FIVE
+
+Dinesh	   22-05-78
+TWENTY-TWO FIVE ONE THOUSAND NINE HUNDRED SEVENTY-EIGHT
+
+Sheena	   16-06-89
+SIXTEEN SIX ONE THOUSAND NINE HUNDRED EIGHTY-NINE
+
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DDSPMMSPYYYYSP')
+--------------------------------------------------------------
+Sundar	   17-08-82
+SEVENTEEN EIGHT ONE THOUSAND NINE HUNDRED EIGHTY-TWO
+
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DDspth MMspth YYYYspth') FROM EMPLOYEE;
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DDSPTHMMSPTHYYYYSPTH')
+--------------------------------------------------------------------
+Yogesh	   01-11-75
+FIRST ELEVENTH ONE THOUSAND NINE HUNDRED SEVENTY-FIFTH
+
+Dinesh	   22-05-78
+TWENTY-SECOND FIFTH ONE THOUSAND NINE HUNDRED SEVENTY-EIGHTH
+
+Sheena	   16-06-89
+SIXTEENTH SIXTH ONE THOUSAND NINE HUNDRED EIGHTY-NINTH
+
+
+EMPNAME    DOB
+---------- --------
+TO_CHAR(DOB,'DDSPTHMMSPTHYYYYSPTH')
+--------------------------------------------------------------------
+Sundar	   17-08-82
+SEVENTEENTH EIGHTH ONE THOUSAND NINE HUNDRED EIGHTY-SECOND
+
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY HH MI SS') FROM EMPLOYEE;
+
+EMPNAME    DOB	    TO_CHAR(DOB,'DDMMYY
+---------- -------- -------------------
+Yogesh	   01-11-75 01 11 1975 12 00 00
+Dinesh	   22-05-78 22 05 1978 12 00 00
+Sheena	   16-06-89 16 06 1989 12 00 00
+Sundar	   17-08-82 17 08 1982 12 00 00
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'HH MI SS') FROM EMPLOYEE;      
+
+EMPNAME    DOB	    TO_CHAR(
+---------- -------- --------
+Yogesh	   01-11-75 12 00 00
+Dinesh	   22-05-78 12 00 00
+Sheena	   16-06-89 12 00 00
+Sundar	   17-08-82 12 00 00
+
+SQL> INSERT INTO EMPLOYEE VALUES(4,'Amit','Meerut','1-Jan-67','21-Sep-04',15000);
+
+1 row created.
+
+SQL> SELECT EMPNAME,DOB,TO_CHAR(dob,'DD MM YYYY'),TO_CHAR(DOJ,'DD MM YYYY') FROM EMPLOYEE WHERE EMPCODE=4;
+
+EMPNAME    DOB	    TO_CHAR(DO TO_CHAR(DO
+---------- -------- ---------- ----------
+Amit	   01-01-67 01 01 1967 21 09 2004
+
+SQL> SELECT * FROM EMPLOYEE;
+
+   EMPCODE EMPNAME    EMPCITY	 DOB	  DOJ	       SALARY
+---------- ---------- ---------- -------- -------- ----------
+	 1 Yogesh     Delhi	 01-11-75 01-01-05	12000
+	 2 Dinesh     Delhi	 22-05-78		 6000
+	 3 Sheena     Mumbai	 16-06-89 01-06-99	50000
+	 5 Sundar     Delhi	 17-08-82		 4400
+	 4 Amit       Meerut	 01-01-67 21-09-04	15000
+
+SQL> UPDATE EMPLOYEE SET DOJ('SYSDATE') WHERE SALARY=6000;
+UPDATE EMPLOYEE SET DOJ('SYSDATE') WHERE SALARY=6000
+                       *
+ERROR at line 1:
+ORA-00927: missing equal sign
+
+
+SQL> 
+SQL> UPDATE EMPLOYEE SET DOJ('SYSDATE') WHERE SALARY=6000;
+UPDATE EMPLOYEE SET DOJ('SYSDATE') WHERE SALARY=6000
+                       *
+ERROR at line 1:
+ORA-00927: missing equal sign
+
+
+SQL> UPDATE EMPLOYEE SET DOJ='SYSDATE' WHERE SALARY=6000;
+UPDATE EMPLOYEE SET DOJ='SYSDATE' WHERE SALARY=6000
+                        *
+ERROR at line 1:
+ORA-01858: a non-numeric character was found where a numeric was expected
+
+
+SQL> UPDATE EMPLOYEE SET DOJ=1/10/23 WHERE SALARY=6000;
+UPDATE EMPLOYEE SET DOJ=1/10/23 WHERE SALARY=6000
+                            *
+ERROR at line 1:
+ORA-00932: inconsistent datatypes: expected DATE got NUMBER
+
+
+SQL> UPDATE EMPLOYEE SET DOJ=1-10-23 WHERE SALARY=6000;
+UPDATE EMPLOYEE SET DOJ=1-10-23 WHERE SALARY=6000
+                            *
+ERROR at line 1:
+ORA-00932: inconsistent datatypes: expected DATE got NUMBER
+
+
+SQL> UPDATE EMPLOYEE SET DOJ='1/10/22' WHERE EMPCODE=2;    
+
+1 row updated.
+
+SQL> UPDATE EMPLOYEE SET DOJ='2/11/23' WHERE SALARY=4400;
+
+1 row updated.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+   EMPCODE EMPNAME    EMPCITY	 DOB	  DOJ	       SALARY
+---------- ---------- ---------- -------- -------- ----------
+	 1 Yogesh     Delhi	 01-11-75 01-01-05	12000
+	 2 Dinesh     Delhi	 22-05-78 01-10-22	 6000
+	 3 Sheena     Mumbai	 16-06-89 01-06-99	50000
+	 5 Sundar     Delhi	 17-08-82 02-11-23	 4400
+	 4 Amit       Meerut	 01-01-67 21-09-04	15000
+
